@@ -1,0 +1,42 @@
+# ==============================================================================
+# Laravel Queue Worker - Systemd Service File
+# ==============================================================================
+#
+# INSTRUCTIONS:
+# 1. Copy this file to systemd configuration directory:
+#    sudo cp deploy/laravel-worker.service /etc/systemd/system/laravel-worker.service
+# 2. Reload systemd daemon to pick up the new service:
+#    sudo systemctl daemon-reload
+# 3. Start and enable the service on boot:
+#    sudo systemctl enable --now laravel-worker.service
+# 4. Check worker logs:
+#    journalctl -u laravel-worker.service -f
+#
+
+[Unit]
+Description=Laravel Queue Worker (sistem-penjadwalan)
+After=network.target
+
+[Service]
+# Run as the web server user
+User=www-data
+Group=www-data
+
+# Set working directory to the application root
+WorkingDirectory=/var/www/sistem-penjadwalan
+
+# Path to PHP binary and Artisan script.
+# (If your PHP path is different, find it with 'which php' and replace below)
+ExecStart=/usr/bin/php artisan queue:work --sleep=3 --tries=3 --timeout=90
+
+# Restart settings
+Restart=always
+RestartSec=3
+
+# Output redirects to systemd journal
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=laravel-worker
+
+[Install]
+WantedBy=multi-user.target
