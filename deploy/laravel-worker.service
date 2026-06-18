@@ -27,7 +27,7 @@ WorkingDirectory=/var/www/sistem-penjadwalan
 
 # Path to PHP binary and Artisan script.
 # (If your PHP path is different, find it with 'which php' and replace below)
-ExecStart=/usr/bin/php artisan queue:work --sleep=3 --tries=3 --timeout=90
+ExecStart=/usr/bin/php /var/www/sistem-penjadwalan/artisan queue:work --sleep=3 --tries=3 --timeout=90
 
 # Restart settings
 Restart=always
